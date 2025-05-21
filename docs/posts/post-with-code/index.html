@@ -361,18 +361,278 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <p>This is a post with executable code.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Se especifica la direccion de la base de datos NetCDF</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>dirsemanal <span class="ot">=</span> <span class="st">"A:/CICIMAR/Bases de datos/Output file of weekly climatology simulated with the ROMS model (NetCDF standard).nc"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#se le asigna a una variable la lectura de esos datos</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>semanal <span class="ot">=</span> <span class="fu">nc_open</span>(dirsemanal)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Se muestra en pantalla las variables que presenta la base de datos,</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">#y sus dimensiones</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(semanal) <span class="co">#consultando metadatos del fichero</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 2</code></pre>
+<pre><code>File A:/CICIMAR/Bases de datos/Output file of weekly climatology simulated with the ROMS model (NetCDF standard).nc (NC_FORMAT_CLASSIC):
+
+     9 variables (excluding dimension variables):
+        double h[lon,lat]   
+            standard_name: Bathymetry
+            long_name: Bathymetry
+            units: m
+            missing_value: NaN
+            FillValue: NaN
+        double ssh[lon,lat,time]   
+            standard_name: SSH
+            long_name: Sea Surface Height
+            units: m
+            missing_value: NaN
+            FillValue: NaN
+        double temp[lon,lat,depth,time]   
+            standard_name: temp
+            long_name: Potential temperature
+            units: degreeC
+            missing_value: NaN
+            FillValue: NaN
+        double salt[lon,lat,depth,time]   
+            standard_name: salt
+            long_name: Salinity
+            units: PSU
+            missing_value: NaN
+            FillValue: NaN
+        double swd[lon,lat,depth,time]   
+            standard_name: Density
+            long_name: Seawater density
+            units: Kg m^-3
+            missing_value: NaN
+            FillValue: NaN
+        double ucurr[lon,lat,depth,time]   
+            standard_name: ucurr
+            long_name: Zonal component
+            units: m s^-1
+            missing_value: NaN
+            FillValue: NaN
+        double vcurr[lon,lat,depth,time]   
+            standard_name: vcurr
+            long_name: Meridional component
+            units: m s^-1
+            missing_value: NaN
+            FillValue: NaN
+        double vort[lon,lat,depth,time]   
+            standard_name: vort
+            long_name: Vorticity
+            units: s^-1
+            missing_value: NaN
+            FillValue: NaN
+        double cspd[lon,lat,depth,time]   
+            standard_name: cspd
+            long_name: Current speed
+            units: m s^-1
+            missing_value: NaN
+            FillValue: NaN
+
+     4 dimensions:
+        lon  Size:183 
+            standard_name: logitude
+            long_name: logitude
+            units: degrees_east
+            axis: X
+        lat  Size:159 
+            standard_name: latitude
+            long_name: latitude
+            units: degrees_north
+            axis: Y
+        depth  Size:61 
+            standard_name: Depth
+            long_name: Vertical axis
+            units: m
+            axis: Z
+        time  Size:48   *** is unlimited *** 
+            standard_name: time
+            long_name: time
+            calendar: standard
+            axis: T
+            comment: 
+
+    5 global attributes:
+        creation_date: 05-Aug-2022 01:24:56
+        Producer: DOCEAN/UFPE/Recife/PE/Brasil
+        dataType: 2D Grid
+        Comment: ArpHDv2 datasets (standard NetCDF files)
+        Author: H. L. Varona &amp; M. Araujo</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">rnorm</span>(<span class="dv">100</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>lat_variable <span class="ot">=</span> <span class="st">'lat'</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>lon_variable <span class="ot">=</span> <span class="st">'lon'</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>time_variable <span class="ot">=</span><span class="st">'time'</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>deepvariable<span class="ot">=</span> <span class="st">'depth'</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#Variables globales</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>latssem <span class="ot">=</span> <span class="fu">ncvar_get</span>(semanal,lat_variable) </span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>lonssem <span class="ot">=</span> <span class="fu">ncvar_get</span>(semanal,lon_variable)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>timessem <span class="ot">=</span> <span class="fu">ncvar_get</span>(semanal,time_variable)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>deepseem<span class="ot">=</span><span class="fu">ncvar_get</span>(semanal,deepvariable)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>salisem <span class="ot">=</span> <span class="fu">ncvar_get</span>(semanal,<span class="st">"salt"</span>) </span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>zonal<span class="ot">=</span><span class="fu">ncvar_get</span>(semanal,<span class="st">"ucurr"</span>)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>meridional<span class="ot">=</span><span class="fu">ncvar_get</span>(semanal,<span class="st">"vcurr"</span>)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="co">#Creando un cuadrante</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>lon1<span class="ot">=</span><span class="sc">-</span><span class="dv">60</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>lon2<span class="ot">=</span><span class="sc">-</span><span class="fl">40.5</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="co">#antes lat1=-3 ahora se cambia a 0 porque afai de usf </span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="co">#en erddap solo está en latitud encima de 0</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>lat1<span class="ot">=</span><span class="dv">0</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>lat2<span class="ot">=</span><span class="fl">9.5</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a><span class="co">#Obteniendo el índice del lugar que ocupa cada coordenada</span></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>indlon1<span class="ot">=</span><span class="fu">which</span>(lonssem<span class="sc">==</span>lon1)</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>indlon2<span class="ot">=</span><span class="fu">which</span>(lonssem<span class="sc">==</span>lon2)</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>indlat1<span class="ot">=</span><span class="fu">which</span>(latssem<span class="sc">==</span>lat1)</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>indlat2<span class="ot">=</span><span class="fu">which</span>(latssem<span class="sc">==</span>lat2)</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a><span class="co">#Acotando el rango de las variables de latitudes y longitudes para que pueda ser empleado correctamente con las funciones de raster vis</span></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>ranlon<span class="ot">=</span>lonssem[indlon1<span class="sc">:</span>indlon2]</span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>ranlat<span class="ot">=</span>latssem[indlat1<span class="sc">:</span>indlat2]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>#Trajo con los NetCDFs y Rasters</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Se le asigna a borrador para no modificar la variable de origen</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>borrador<span class="ot">=</span>salisem[indlon1<span class="sc">:</span>indlon2,indlat1<span class="sc">:</span>indlat2,,]</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Lista vacía</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Creando una lista vacía con 48 elementos</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>lista_vacia <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"list"</span>, <span class="at">length =</span> <span class="dv">48</span>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Se rota cada elemento semanal de salinidad correctamente y se le asigna a </span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co"># cada elemento de la lista vacía creada </span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Se le agragan las coordenadas a cada elemento de la lista </span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">48</span>){</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Se rota cada elemento </span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a> temporal <span class="ot">&lt;-</span> <span class="fu">apply</span>(<span class="fu">t</span>(borrador[,,<span class="dv">1</span>,i]),<span class="dv">2</span>,rev)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a> lista_vacia[[i]]<span class="ot">=</span>temporal </span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Se convierte a raster cada elemento de la lista</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a> lista_vacia[[i]]<span class="ot">=</span><span class="fu">raster</span>(lista_vacia[[i]])</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a> <span class="fu">extent</span>(lista_vacia[[i]]) <span class="ot">&lt;-</span> <span class="fu">extent</span>(<span class="fu">c</span>(<span class="fu">min</span>(ranlon),<span class="fu">max</span>(ranlon),<span class="fu">min</span>(ranlat),<span class="fu">max</span>(ranlat)))</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="do">##########Creando mapa de dirección de corrientes</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Se le asigna a borrador para no modificar la variable de origen</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>u<span class="ot">=</span>zonal[indlon1<span class="sc">:</span>indlon2,indlat1<span class="sc">:</span>indlat2,,]</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>v<span class="ot">=</span>meridional[indlon1<span class="sc">:</span>indlon2,indlat1<span class="sc">:</span>indlat2,,]</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Lista vacía</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Creando una lista vacía con 48 elementos</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>listaU <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"list"</span>, <span class="at">length =</span> <span class="dv">48</span>)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Creando una lista vacía con 48 elementos</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>listaV <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"list"</span>, <span class="at">length =</span> <span class="dv">48</span>)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Se rota cada elemento semanal de salinidad correctamente y se le asigna a </span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="co"># cada elemento de la lista vacía creada </span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Se le agragan las coordenadas a cada elemento de la lista </span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">48</span>){</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Se rota cada elemento </span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>  temporalU <span class="ot">&lt;-</span> <span class="fu">apply</span>(<span class="fu">t</span>(u[,,<span class="dv">1</span>,i]),<span class="dv">2</span>,rev)</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>  temporalV <span class="ot">&lt;-</span><span class="fu">apply</span>(<span class="fu">t</span>(v[,,<span class="dv">1</span>,i]),<span class="dv">2</span>,rev)</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>  listaU[[i]]<span class="ot">=</span>temporalU</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>  listaV[[i]]<span class="ot">=</span>temporalV</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Se convierte a raster cada elemento de la lista</span></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>  listaU[[i]]<span class="ot">=</span><span class="fu">raster</span>(listaU[[i]])</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>  listaV[[i]]<span class="ot">=</span><span class="fu">raster</span>(listaV[[i]])</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">extent</span>(listaU[[i]]) <span class="ot">&lt;-</span> <span class="fu">extent</span>(<span class="fu">c</span>(lon1,lon2,lat1,lat2))</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">extent</span>(listaV[[i]]) <span class="ot">&lt;-</span> <span class="fu">extent</span>(<span class="fu">c</span>(lon1,lon2,lat1,lat2)) </span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>  }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>cntry <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"datos/shp/ne_10m_land.shp"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Reading layer `ne_10m_land' from data source 
+  `A:\Libros y tutoriales de programación\R proyectos\Rmarkdown\Quartos\WebProyect\posts\post-with-code\datos\shp\ne_10m_land.shp' 
+  using driver `ESRI Shapefile'
+Simple feature collection with 11 features and 3 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: -180 ymin: -90 xmax: 180 ymax: 83.6341
+Geodetic CRS:  WGS 84</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>cntry_sp_wgs84 <span class="ot">&lt;-</span> <span class="fu">as</span>(<span class="fu">st_transform</span>(cntry , <span class="dv">4326</span>), <span class="st">"Spatial"</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>myColorkey <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">title=</span><span class="fu">list</span>(<span class="st">"[m/s]"</span>))</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>ColorkeySal <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">title=</span><span class="fu">list</span>(<span class="st">"UPS"</span>))</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>atsal<span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">24</span>,<span class="dv">38</span>,<span class="fl">1.5</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Inicializar una lista para almacenar cada frame del GIF</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>frames <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">48</span>) {</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  w <span class="ot">&lt;-</span> <span class="fu">brick</span>(listaU[[i]], listaV[[i]])</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  u <span class="ot">&lt;-</span> <span class="fu">vectorplot</span>(w<span class="sc">*</span><span class="dv">10</span>, <span class="at">isField =</span> <span class="st">"dXY"</span>, </span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>                  <span class="at">par.settings =</span> <span class="fu">viridisTheme</span>(<span class="at">region =</span> <span class="fu">viridis</span>(<span class="dv">10</span>)),</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>                  <span class="at">scaleSlope =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>                  <span class="at">at =</span> atsal, </span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>                  <span class="at">region =</span> lista_vacia[[i]], </span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>                  <span class="at">colorkey =</span> ColorkeySal, </span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>                  <span class="at">margin =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>                  <span class="at">narrows =</span> <span class="dv">1000</span>,</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>                  <span class="at">col.arrows =</span> <span class="st">"black"</span>,</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>                  <span class="at">main =</span> <span class="fu">paste</span>(<span class="st">"Dirección y magnitud de corrientes (m/s) y grado de salinidad, </span><span class="sc">\n</span><span class="st"> mes: "</span>, <span class="st">", semana: "</span>, <span class="st">""</span>, <span class="at">sep =</span> <span class="st">""</span>),</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>                  <span class="at">scales =</span> <span class="fu">list</span>(</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>                    <span class="at">y =</span> <span class="fu">list</span>(</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>                      <span class="at">at =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">8</span>),</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>                      <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"2"</span>, <span class="st">"5"</span>, <span class="st">"8"</span>)</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>                    )</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>                  )) <span class="sc">+</span> </span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">layer</span>(<span class="fu">sp.polygons</span>(cntry_sp_wgs84, <span class="at">fill =</span> <span class="st">"#b28158"</span>))</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Guardar cada plot como imagen temporal</span></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">png</span>(<span class="at">filename =</span> <span class="fu">paste0</span>(<span class="st">"frame_"</span>, <span class="fu">sprintf</span>(<span class="st">"%02d"</span>, i), <span class="st">".png"</span>), <span class="at">width =</span> <span class="dv">800</span>, <span class="at">height =</span> <span class="dv">600</span>)</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(u)</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dev.off</span>()</span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Leer la imagen y añadirla a la lista de frames</span></span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>  frames[[i]] <span class="ot">&lt;-</span> <span class="fu">image_read</span>(<span class="fu">paste0</span>(<span class="st">"frame_"</span>, <span class="fu">sprintf</span>(<span class="st">"%02d"</span>, i), <span class="st">".png"</span>))</span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a><span class="co"># Combinar todos los frames en un GIF</span></span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>gif <span class="ot">&lt;-</span> <span class="fu">image_animate</span>(<span class="fu">image_join</span>(frames), <span class="at">fps =</span> <span class="dv">5</span>)  <span class="co"># 5 frames por segundo</span></span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a><span class="co"># Guardar el GIF</span></span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a><span class="fu">image_write</span>(gif, <span class="st">"corrientes_salinidad.gif"</span>)</span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a><span class="co"># Opcional: Eliminar los archivos PNG temporales</span></span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a><span class="fu">file.remove</span>(<span class="fu">list.files</span>(<span class="at">pattern =</span> <span class="st">"frame_.*</span><span class="sc">\\</span><span class="st">.png"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+[16] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+[31] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+[46] TRUE TRUE TRUE</code></pre>
+</div>
+</div>
+<div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="corrientes_salinidad.gif" class="img-fluid figure-img"></p>
+<figcaption><strong>Figura 1</strong>: Secuencia de imagenes de corrientes superficiales y salinidad de la pluma del río Amazonas</figcaption>
 </figure>
-</div>
-</div>
 </div>
 
 
